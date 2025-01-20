@@ -1,19 +1,33 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
 
+val apiPropertiesFile = rootProject.file("api.properties")
+val appPropertiesFile = rootProject.file("app.properties")
+val apiProperties = Properties().apply {
+    load(FileInputStream(apiPropertiesFile))
+}
+val appProperties = Properties().apply {
+    load(FileInputStream(appPropertiesFile))
+}
+
 android {
-    namespace = "id.haaweejee.test.alfagift.alfamovie"
-    compileSdk = 34
+    namespace = appProperties.getProperty("APPLICATION_ID")
+    compileSdk = appProperties.getProperty("TARGET_SDK").toInt()
 
     defaultConfig {
-        applicationId = "id.haaweejee.test.alfagift.alfamovie"
-        minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        applicationId = appProperties.getProperty("APPLICATION_ID")
+        minSdk = appProperties.getProperty("MIN_SDK").toInt()
+        targetSdk = appProperties.getProperty("TARGET_SDK").toInt()
+        versionCode = appProperties.getProperty("VERSION_CODE").toInt()
+        versionName = appProperties.getProperty("VERSION_NAME")
+        buildConfigField("String", "ACCESS_TOKEN", apiProperties.getProperty("ACCESS_TOKEN"))
+        buildConfigField("String", "BASE_URL", apiProperties.getProperty("BASE_URL"))
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -36,6 +50,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
