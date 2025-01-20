@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
     fun fetchDiscover(page: Int): Flow<NetworkResult<List<Movie>>>
-    fun fetchDetail(movieId: String): Flow<NetworkResult<DetailMovie>>
-    fun fetchReviews(movieId: String): Flow<NetworkResult<List<MovieReview>>>
-    fun fetchVideos(movieId: String): Flow<NetworkResult<List<MovieVideo>>>
+    fun fetchDetail(movieId: Int): Flow<NetworkResult<DetailMovie>>
+    fun fetchReviews(movieId: Int): Flow<NetworkResult<List<MovieReview>>>
+    fun fetchVideos(movieId: Int): Flow<NetworkResult<List<MovieVideo>>>
 }
