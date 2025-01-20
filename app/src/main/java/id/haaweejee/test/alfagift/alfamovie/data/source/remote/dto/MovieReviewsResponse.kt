@@ -1,4 +1,4 @@
-package id.haaweejee.test.alfagift.alfamovie.data.remote.dto
+package id.haaweejee.test.alfagift.alfamovie.data.source.remote.dto
 
 
 import com.google.gson.annotations.SerializedName
