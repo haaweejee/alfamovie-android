@@ -88,4 +88,8 @@ dependencies {
     // Dependency Injection Library
     implementation(libs.koin.android)
     implementation(libs.koin.core)
+
+    // Load More Library
+    implementation(libs.paging)
+    implementation(libs.paging.compose)
 }
