@@ -8,6 +8,10 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
 composeBom = "2024.04.01"
+koinVer = "3.5.6"
+chuckerVer = "4.0.0"
+ktorVer = "2.3.7"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -24,6 +28,20 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorVer" }
+ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktorVer" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktorVer" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktorVer" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktorVer" }
+ktor-serialization-gson = { module = "io.ktor:ktor-serialization-gson", version.ref = "ktorVer" }
+
+chucker = { module = "com.github.chuckerteam.chucker:library", version.ref = "chuckerVer" }
+chucker-no-op = { module = "com.github.chuckerteam.chucker:library-no-op", version.ref = "chuckerVer" }
+
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinVer" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinVer" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

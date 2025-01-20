@@ -51,6 +51,7 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
+        viewBinding = true
     }
 }
 
@@ -71,4 +72,20 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Ktor Network Library
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.serialization.gson)
+
+    // Network Interceptor Library
+    debugImplementation(libs.chucker)
+    releaseImplementation(libs.chucker.no.op)
+
+    // Dependency Injection Library
+    implementation(libs.koin.android)
+    implementation(libs.koin.core)
 }
