@@ -11,7 +11,7 @@ data class DetailMovieResponse(
     @SerializedName("belongs_to_collection")
     val belongsToCollection: Any? = null,
     @SerializedName("budget")
-    val budget: Int? = null,
+    val budget: Long? = null,
     @SerializedName("genres")
     val genres: List<Genre?>? = null,
     @SerializedName("homepage")

@@ -15,23 +15,23 @@ class MovieDBApiServiceImpl(
     private val service: HttpClient
 ) : MovieDBApiService {
 
-    override suspend fun getMoviesDiscover(genreId: String?, page: Int): MoviesResponse =
+    override suspend fun getMoviesDiscover(page: Int): MoviesResponse? =
         service.get {
             url(BuildConfig.BASE_URL + moviesDiscover)
             parameter("page", page)
         }.body()
 
-    override suspend fun getMovieDetail(movieId: String): DetailMovieResponse =
+    override suspend fun getMovieDetail(movieId: String): DetailMovieResponse? =
         service.get {
             url(BuildConfig.BASE_URL + movieDetail + movieId)
         }.body()
 
-    override suspend fun getMovieReview(movieId: String): MovieReviewsResponse =
+    override suspend fun getMovieReview(movieId: String): MovieReviewsResponse? =
         service.get {
             url(BuildConfig.BASE_URL + movieDetail + movieId + movieReviews)
         }.body()
 
-    override suspend fun getMovieVideo(movieId: String): MovieVideosResponse =
+    override suspend fun getMovieVideo(movieId: String): MovieVideosResponse?? =
         service.get {
             url(BuildConfig.BASE_URL + movieDetail + movieId + movieVideos)
         }.body()
