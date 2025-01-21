@@ -13,6 +13,11 @@ chuckerVer = "4.0.0"
 ktorVer = "2.3.7"
 paging = "3.3.5"
 pagingCompose = "3.3.5"
+appcompat = "1.7.0"
+material = "1.12.0"
+activity = "1.9.3"
+constraintlayout = "2.2.0"
+coilVer = "3.0.4"
 
 
 [libraries]
@@ -44,8 +49,16 @@ chucker-no-op = { module = "com.github.chuckerteam.chucker:library-no-op", versi
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinVer" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinVer" }
 
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilVer" }
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilVer" }
+
 paging = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
 paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingCompose" }
+
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

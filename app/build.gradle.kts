@@ -65,6 +65,10 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -92,4 +96,8 @@ dependencies {
     // Load More Library
     implementation(libs.paging)
     implementation(libs.paging.compose)
+
+    // Coil Library
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 }
