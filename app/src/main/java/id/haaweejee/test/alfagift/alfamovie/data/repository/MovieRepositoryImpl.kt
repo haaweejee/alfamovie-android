@@ -1,5 +1,6 @@
 package id.haaweejee.test.alfagift.alfamovie.data.repository
 
+import android.util.Log
 import id.haaweejee.test.alfagift.alfamovie.data.common.NetworkResult
 import id.haaweejee.test.alfagift.alfamovie.data.mapper.toDetailMovie
 import id.haaweejee.test.alfagift.alfamovie.data.mapper.toListMovie
@@ -22,16 +23,16 @@ class MovieRepositoryImpl(
     private val remote: MovieDBApiService
 ) : MovieRepository {
     override fun fetchDiscover(page: Int): Flow<NetworkResult<List<Movie>>> {
-        return flow {
+        return channelFlow {
             try {
                 // Attempt to get data from the API
                 val response = remote.getMoviesDiscover(page)
 
                 // Check if the response is successful
-                if (response != null) {
-                    emit(NetworkResult.ResultSuccess(response.toListMovie()))
+                if (response?.results != null) {
+                    send(NetworkResult.ResultSuccess(response.toListMovie()))
                 } else {
-                    emit(
+                    send(
                         NetworkResult.ResultError(
                             404,
                             "Data not found"
@@ -40,7 +41,7 @@ class MovieRepositoryImpl(
                 }
             } catch (e: ClientRequestException) {
                 // Handle HTTP errors (like 401, 403, 404)
-                emit(
+                send(
                     NetworkResult.ResultError(
                         e.response.status.value,
                         e.message
@@ -49,7 +50,7 @@ class MovieRepositoryImpl(
 
             } catch (e: ServerResponseException) {
                 // Handles 5xx HTTP errors
-                emit(
+                send(
                     NetworkResult.ResultError(
                         e.response.status.value,
                         e.message
@@ -57,11 +58,11 @@ class MovieRepositoryImpl(
                 )
             } catch (e: IOException) {
                 // Handle network failures, like no internet
-                emit(NetworkResult.ResultFailed(e))
+                send(NetworkResult.ResultFailed(e))
 
             } catch (e: Exception) {
                 // Handle unexpected exceptions
-                emit(NetworkResult.ResultFailed(e))
+                send(NetworkResult.ResultFailed(e))
             }
         }
     }
@@ -161,9 +162,10 @@ class MovieRepositoryImpl(
             try {
                 // Attempt to get data from the API
                 val response = remote.getMovieVideo(movieId)
+                Log.d("MovieRepositoryImpl", "fetchVideos: $response")
 
                 // Check if the response is successful
-                if (response != null) {
+                if (response?.results != null) {
                     send(NetworkResult.ResultSuccess(response.toListMovieVideo()))
                 } else {
                     send(

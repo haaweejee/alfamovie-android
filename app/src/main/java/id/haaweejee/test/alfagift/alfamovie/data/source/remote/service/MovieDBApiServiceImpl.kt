@@ -17,29 +17,45 @@ class MovieDBApiServiceImpl(
     private val service: HttpClient
 ) : MovieDBApiService {
 
-    override suspend fun getMoviesDiscover(page: Int): MoviesResponse? =
-        service.get {
-            url(BuildConfig.BASE_URL + moviesDiscover)
-            header(HttpHeaders.Authorization, "Bearer ${BuildConfig.ACCESS_TOKEN}")
-            parameter("page", page)
-        }.body()
+    override suspend fun getMoviesDiscover(page: Int): MoviesResponse? {
+        return try {
+            service.get {
+                url(BuildConfig.BASE_URL + moviesDiscover)
+                header(HttpHeaders.Authorization, "Bearer ${BuildConfig.ACCESS_TOKEN}")
+                parameter("page", page)
+            }.body()
+        } catch (ex: Exception) {
+            null
+        }
+    }
 
     override suspend fun getMovieDetail(movieId: Int): DetailMovieResponse? =
-        service.get {
-            url(BuildConfig.BASE_URL + movieDetail + movieId)
-            header(HttpHeaders.Authorization, "Bearer ${BuildConfig.ACCESS_TOKEN}")
-        }.body()
+        try {
+            service.get {
+                url(BuildConfig.BASE_URL + movieDetail + movieId)
+                header(HttpHeaders.Authorization, "Bearer ${BuildConfig.ACCESS_TOKEN}")
+            }.body()
+        } catch (ex: Exception) {
+            null
+        }
 
     override suspend fun getMovieReview(movieId: Int): MovieReviewsResponse? =
-        service.get {
-            url(BuildConfig.BASE_URL + movieDetail + movieId + movieReviews)
-            header(HttpHeaders.Authorization, "Bearer ${BuildConfig.ACCESS_TOKEN}")
-        }.body()
+        try {
+            service.get {
+                url(BuildConfig.BASE_URL + movieDetail + movieId + movieReviews)
+                header(HttpHeaders.Authorization, "Bearer ${BuildConfig.ACCESS_TOKEN}")
+            }.body()
+        } catch (ex: Exception) {
+            null
+        }
 
     override suspend fun getMovieVideo(movieId: Int): MovieVideosResponse? =
-        service.get {
-            url(BuildConfig.BASE_URL + movieDetail + movieId + movieVideos)
-            header(HttpHeaders.Authorization, "Bearer ${BuildConfig.ACCESS_TOKEN}")
-        }.body()
-
+        try {
+            service.get {
+                url(BuildConfig.BASE_URL + movieDetail + movieId + movieVideos)
+                header(HttpHeaders.Authorization, "Bearer ${BuildConfig.ACCESS_TOKEN}")
+            }.body()
+        } catch (ex: Exception) {
+            null
+        }
 }
