@@ -7,6 +7,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import id.haaweejee.test.alfagift.alfamovie.R
 import id.haaweejee.test.alfagift.alfamovie.databinding.ActivityDetailMovieBinding
+import id.haaweejee.test.alfagift.alfamovie.presentation.pages.detail.screen.DetailScreen
 import id.haaweejee.test.alfagift.alfamovie.presentation.pages.detail.vm.DetailMovieViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -26,9 +27,13 @@ class DetailMovieActivity : AppCompatActivity() {
         setContentView(binding.root)
         viewModel.setMovieID(movieID)
 
+        binding.composeView.setContent {
+            DetailScreen(viewModel = viewModel)
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            v.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
             insets
         }
     }
