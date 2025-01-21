@@ -100,4 +100,10 @@ dependencies {
     // Coil Library
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+
+    // Youtube Player Library
+    implementation(libs.youtube.player)
+
+    // Lottie Library
+    implementation(libs.lottie.compose)
 }

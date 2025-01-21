@@ -18,7 +18,8 @@ material = "1.12.0"
 activity = "1.9.3"
 constraintlayout = "2.2.0"
 coilVer = "3.0.4"
-
+youtubePlayerVer = "12.1.1"
+lottieComposeVer = "6.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -54,6 +55,11 @@ coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version
 
 paging = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
 paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingCompose" }
+
+youtube-player = { module = "com.pierfrancescosoffritti.androidyoutubeplayer:core", version.ref = "youtubePlayerVer" }
+
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieComposeVer" }
+
 
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
