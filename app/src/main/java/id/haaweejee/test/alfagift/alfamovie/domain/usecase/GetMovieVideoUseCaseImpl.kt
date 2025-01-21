@@ -16,7 +16,11 @@ class GetMovieVideoUseCaseImpl(private val repository: MovieRepository) : GetMov
             return@flow
         } else {
             val data = result.data
-            val trailer = data.first { it.type == "Trailer" }
+            val trailer = data.find { it.type == "Trailer" || it.type == "Teaser" } ?: MovieVideo(
+                key = "",
+                site = "",
+                type = ""
+            )
             emit(NetworkResult.ResultSuccess(trailer))
             return@flow
         }
