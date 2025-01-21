@@ -23,7 +23,8 @@ fun MoviesResponse.Result.toMovie(): Movie {
         title = title.orEmpty(),
         poster = imageUrl + posterPath.orEmpty(),
         releaseDate = releaseDate.orEmpty(),
-        rating = voteAverage ?: 0.0
+        rating = voteAverage ?: 0.0,
+        overview = overview.orEmpty()
     )
 }
 
