@@ -74,7 +74,7 @@ class MovieRepositoryImpl(
                 val response = remote.getMovieDetail(movieId)
 
                 // Check if the response is successful
-                if (response != null) {
+                if (response?.id != null) {
                     emit(NetworkResult.ResultSuccess(response.toDetailMovie()))
                 } else {
                     emit(
