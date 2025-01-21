@@ -8,8 +8,10 @@ import id.haaweejee.test.alfagift.alfamovie.data.source.remote.dto.MoviesRespons
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.url
+import io.ktor.http.HttpHeaders
 
 class MovieDBApiServiceImpl(
     private val service: HttpClient
@@ -18,22 +20,26 @@ class MovieDBApiServiceImpl(
     override suspend fun getMoviesDiscover(page: Int): MoviesResponse? =
         service.get {
             url(BuildConfig.BASE_URL + moviesDiscover)
+            header(HttpHeaders.Authorization, "Bearer ${BuildConfig.ACCESS_TOKEN}")
             parameter("page", page)
         }.body()
 
-    override suspend fun getMovieDetail(movieId: String): DetailMovieResponse? =
+    override suspend fun getMovieDetail(movieId: Int): DetailMovieResponse? =
         service.get {
             url(BuildConfig.BASE_URL + movieDetail + movieId)
+            header(HttpHeaders.Authorization, "Bearer ${BuildConfig.ACCESS_TOKEN}")
         }.body()
 
-    override suspend fun getMovieReview(movieId: String): MovieReviewsResponse? =
+    override suspend fun getMovieReview(movieId: Int): MovieReviewsResponse? =
         service.get {
             url(BuildConfig.BASE_URL + movieDetail + movieId + movieReviews)
+            header(HttpHeaders.Authorization, "Bearer ${BuildConfig.ACCESS_TOKEN}")
         }.body()
 
-    override suspend fun getMovieVideo(movieId: String): MovieVideosResponse?? =
+    override suspend fun getMovieVideo(movieId: Int): MovieVideosResponse? =
         service.get {
             url(BuildConfig.BASE_URL + movieDetail + movieId + movieVideos)
+            header(HttpHeaders.Authorization, "Bearer ${BuildConfig.ACCESS_TOKEN}")
         }.body()
 
 }

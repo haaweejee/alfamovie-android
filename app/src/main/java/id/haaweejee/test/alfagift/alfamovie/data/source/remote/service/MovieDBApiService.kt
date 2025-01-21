@@ -7,7 +7,7 @@ import id.haaweejee.test.alfagift.alfamovie.data.source.remote.dto.MoviesRespons
 
 interface MovieDBApiService {
     suspend fun getMoviesDiscover(page: Int): MoviesResponse?
-    suspend fun getMovieDetail(movieId: String): DetailMovieResponse?
-    suspend fun getMovieReview(movieId: String): MovieReviewsResponse?
-    suspend fun getMovieVideo(movieId: String): MovieVideosResponse?
+    suspend fun getMovieDetail(movieId: Int): DetailMovieResponse?
+    suspend fun getMovieReview(movieId: Int): MovieReviewsResponse?
+    suspend fun getMovieVideo(movieId: Int): MovieVideosResponse?
 }

@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import id.haaweejee.test.alfagift.alfamovie.BuildConfig
 import id.haaweejee.test.alfagift.alfamovie.data.source.remote.service.MovieDBApiService
 import id.haaweejee.test.alfagift.alfamovie.data.source.remote.service.MovieDBApiServiceImpl
 import io.ktor.client.HttpClient
@@ -47,7 +46,6 @@ val ktorModule = module {
                 // Headers
                 install(DefaultRequest) {
                     header(HttpHeaders.ContentType, ContentType.Application.Json)
-                    header(HttpHeaders.Authorization, "Bearer ${BuildConfig.ACCESS_TOKEN}")
                 }
 
             }

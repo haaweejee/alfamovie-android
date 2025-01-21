@@ -14,6 +14,7 @@ import id.haaweejee.test.alfagift.alfamovie.domain.repository.MovieRepository
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.flow
 import java.io.IOException
 
@@ -42,7 +43,7 @@ class MovieRepositoryImpl(
                 emit(
                     NetworkResult.ResultError(
                         e.response.status.value,
-                        e.message ?: "Client error"
+                        e.message
                     )
                 )
 
@@ -51,7 +52,7 @@ class MovieRepositoryImpl(
                 emit(
                     NetworkResult.ResultError(
                         e.response.status.value,
-                        e.message ?: "Server error"
+                        e.message
                     )
                 )
             } catch (e: IOException) {
@@ -65,7 +66,7 @@ class MovieRepositoryImpl(
         }
     }
 
-    override fun fetchDetail(movieId: String): Flow<NetworkResult<DetailMovie>> {
+    override fun fetchDetail(movieId: Int): Flow<NetworkResult<DetailMovie>> {
         return flow {
             try {
                 // Attempt to get data from the API
@@ -96,7 +97,7 @@ class MovieRepositoryImpl(
                 emit(
                     NetworkResult.ResultError(
                         e.response.status.value,
-                        e.message ?: "Server error"
+                        e.message
                     )
                 )
             } catch (e: IOException) {
@@ -110,7 +111,7 @@ class MovieRepositoryImpl(
         }
     }
 
-    override fun fetchReviews(movieId: String): Flow<NetworkResult<List<MovieReview>>> {
+    override fun fetchReviews(movieId: Int): Flow<NetworkResult<List<MovieReview>>> {
         return flow {
             try {
                 // Attempt to get data from the API
@@ -132,7 +133,7 @@ class MovieRepositoryImpl(
                 emit(
                     NetworkResult.ResultError(
                         e.response.status.value,
-                        e.message ?: "Client error"
+                        e.message
                     )
                 )
 
@@ -141,7 +142,7 @@ class MovieRepositoryImpl(
                 emit(
                     NetworkResult.ResultError(
                         e.response.status.value,
-                        e.message ?: "Server error"
+                        e.message
                     )
                 )
             } catch (e: IOException) {
@@ -155,17 +156,17 @@ class MovieRepositoryImpl(
         }
     }
 
-    override fun fetchVideos(movieId: String): Flow<NetworkResult<List<MovieVideo>>> {
-        return flow {
+    override fun fetchVideos(movieId: Int): Flow<NetworkResult<List<MovieVideo>>> {
+        return channelFlow {
             try {
                 // Attempt to get data from the API
                 val response = remote.getMovieVideo(movieId)
 
                 // Check if the response is successful
                 if (response != null) {
-                    emit(NetworkResult.ResultSuccess(response.toListMovieVideo()))
+                    send(NetworkResult.ResultSuccess(response.toListMovieVideo()))
                 } else {
-                    emit(
+                    send(
                         NetworkResult.ResultError(
                             404,
                             "Data not found"
@@ -174,16 +175,15 @@ class MovieRepositoryImpl(
                 }
             } catch (e: ClientRequestException) {
                 // Handle HTTP errors (like 401, 403, 404)
-                emit(
+                send(
                     NetworkResult.ResultError(
                         e.response.status.value,
                         e.message ?: "Client error"
                     )
                 )
-
             } catch (e: ServerResponseException) {
                 // Handles 5xx HTTP errors
-                emit(
+                send(
                     NetworkResult.ResultError(
                         e.response.status.value,
                         e.message ?: "Server error"
@@ -191,11 +191,10 @@ class MovieRepositoryImpl(
                 )
             } catch (e: IOException) {
                 // Handle network failures, like no internet
-                emit(NetworkResult.ResultFailed(e))
-
+                send(NetworkResult.ResultFailed(e))
             } catch (e: Exception) {
                 // Handle unexpected exceptions
-                emit(NetworkResult.ResultFailed(e))
+                send(NetworkResult.ResultFailed(e))
             }
         }
     }
