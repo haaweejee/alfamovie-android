@@ -67,10 +67,12 @@ fun MainScreen(
     val networkStatus by networkStateTracker.observeNetworkState()
         .collectAsState(initial = NetworkStatus.Unavailable)
     val isConnected = networkStatus is NetworkStatus.Available
+    var isLoaded by remember { mutableStateOf(false) }
 
     LaunchedEffect(isConnected) {
         if (state.discoverMovie !is ViewState.ViewSuccess) {
             viewModel.getDiscoverMovies()
+            isLoaded = true
         }
     }
 
@@ -152,7 +154,21 @@ fun MainScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            if (isConnected) {
+            if (!isConnected && isLoaded) {
+                ErrorAnimation(
+                    lottie = R.raw.no_internet,
+                    title = "No Internet",
+                    message = "Please Check your Internet Connection",
+                    actionText = "Go to Settings",
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .padding(horizontal = 16.dp),
+                    onAction = {
+                        val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
+                        context.startActivity(intent)
+                    }
+                )
+            } else {
                 when (state.discoverMovie) {
                     ViewState.ViewLoading -> {
                         if (isGridViewActive) {
@@ -192,10 +208,11 @@ fun MainScreen(
                             lottie = R.raw.error_animation,
                             title = title,
                             message = message,
-                            buttonText = "Retry",
+                            actionText = "Retry",
                             modifier = Modifier
                                 .padding(top = 16.dp)
-                                .padding(horizontal = 16.dp)
+                                .padding(horizontal = 16.dp),
+                            onAction = { viewModel.getDiscoverMovies() }
                         ) {
                             viewModel.getDiscoverMovies()
                         }
@@ -208,7 +225,7 @@ fun MainScreen(
                             lottie = R.raw.error_animation,
                             title = "Something when Wrong",
                             message = message,
-                            buttonText = "Retry",
+                            actionText = "Retry",
                             modifier = Modifier
                                 .padding(top = 16.dp)
                                 .padding(horizontal = 16.dp)
@@ -275,19 +292,6 @@ fun MainScreen(
                             }
                         }
                     }
-                }
-            } else {
-                ErrorAnimation(
-                    lottie = R.raw.no_internet,
-                    title = "No Internet",
-                    message = "Please Check your Internet Connection",
-                    buttonText = "Go to Settings",
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .padding(horizontal = 16.dp)
-                ) {
-                    val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
-                    context.startActivity(intent)
                 }
             }
         }

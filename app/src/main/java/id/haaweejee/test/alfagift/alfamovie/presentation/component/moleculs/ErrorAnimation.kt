@@ -30,12 +30,14 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 
 @Composable
 fun ErrorAnimation(
+    modifier: Modifier = Modifier,
     lottie: Int,
     title: String,
     message: String,
-    buttonText: String,
-    modifier: Modifier = Modifier,
-    onClick: (() -> Unit?)?
+    actionText: String = "",
+    navigateText: String = "",
+    onAction: (() -> Unit?)? = null,
+    onNavigate: (() -> Unit?)? = null
 ) {
     val isPlaying by remember {
         mutableStateOf(true)
@@ -85,15 +87,30 @@ fun ErrorAnimation(
                 color = Color.White,
             )
             Spacer(modifier = Modifier.height(8.dp))
-            if (onClick != null) {
+            if (onAction != null) {
                 Button(
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF444444)),
-                    onClick = { onClick.invoke() },
+                    onClick = { onAction.invoke() },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(4.dp)
                 ) {
                     Text(
-                        buttonText,
+                        actionText,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.White,
+                    )
+                }
+            }
+            if (onNavigate != null) {
+                Button(
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF444444)),
+                    onClick = { onNavigate.invoke() },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(4.dp)
+                ) {
+                    Text(
+                        navigateText,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = Color.White,
