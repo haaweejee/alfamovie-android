@@ -30,6 +30,7 @@ fun HomeContentOrganismComponent(
     isGridViewActive: Boolean,
     gridState: LazyGridState,
     listState: LazyListState,
+    isConnected: Boolean,
     onClick: (HomeContentOrganismComponentEvent) -> Unit
 ) {
     when (state) {
@@ -119,7 +120,11 @@ fun HomeContentOrganismComponent(
                             onClick.invoke(HomeContentOrganismComponentEvent.OnClick(it.id))
                         }
                     }
-
+                    if (isConnected) {
+                        items(2) {
+                            MovieGridCardShimmer()
+                        }
+                    }
                 }
             } else {
                 LazyColumn(
@@ -137,6 +142,11 @@ fun HomeContentOrganismComponent(
                             data = it
                         ) {
                             onClick.invoke(HomeContentOrganismComponentEvent.OnClick(it.id))
+                        }
+                    }
+                    item {
+                        if (isConnected) {
+                            MovieListCardShimmer()
                         }
                     }
                 }

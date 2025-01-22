@@ -18,6 +18,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -59,7 +60,7 @@ fun MainScreen(
     val isConnected = networkStatus is NetworkStatus.Available
     var isLoaded by remember { mutableStateOf(false) }
 
-    LaunchedEffect(isConnected) {
+    LaunchedEffect(Unit) {
         if (state.discoverMovie !is ViewState.ViewSuccess) {
             viewModel.getDiscoverMovies()
             isLoaded = true
@@ -144,42 +145,55 @@ fun MainScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            if (!isConnected && isLoaded) {
+            if (!isConnected && isLoaded && (state.discoverMovie as? ViewState.ViewSuccess)?.data.isNullOrEmpty()) {
                 ErrorAnimation(
                     lottie = R.raw.no_internet,
                     title = "No Internet",
                     message = "Please Check your Internet Connection",
-                    actionText = "Go to Settings",
+                    actionText = "Retry",
+                    navigateText = "Go To Settings",
                     modifier = Modifier
                         .padding(top = 16.dp)
                         .padding(horizontal = 16.dp),
                     onAction = {
+                        viewModel.getDiscoverMovies()
+                    },
+                    onNavigate = {
                         val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
                         context.startActivity(intent)
                     }
                 )
             } else {
-                HomeContentOrganismComponent(
-                    state = state.discoverMovie,
-                    listState = listState,
-                    gridState = gridState,
-                    isGridViewActive = isGridViewActive
-                ) { event ->
-                    when (event) {
-                        is HomeContentOrganismComponentEvent.OnClick -> {
-                            context.startActivity(
-                                Intent(
-                                    context,
-                                    DetailMovieActivity::class.java
-                                ).putExtra(
-                                    DetailMovieActivity.EXTRA_MOVIE_ID, event.id
+                PullToRefreshBox(
+                    isRefreshing = isLoaded && state.isRefreshing,
+                    onRefresh = {
+                        viewModel.getDiscoverMovies(isPullRefresh = true)
+                    }
+                ) {
+                    HomeContentOrganismComponent(
+                        state = state.discoverMovie,
+                        listState = listState,
+                        gridState = gridState,
+                        isGridViewActive = isGridViewActive,
+                        isConnected = isConnected
+                    ) { event ->
+                        when (event) {
+                            is HomeContentOrganismComponentEvent.OnClick -> {
+                                context.startActivity(
+                                    Intent(
+                                        context,
+                                        DetailMovieActivity::class.java
+                                    ).putExtra(
+                                        DetailMovieActivity.EXTRA_MOVIE_ID, event.id
+                                    )
                                 )
-                            )
-                        }
+                            }
 
-                        HomeContentOrganismComponentEvent.OnRetry -> viewModel.getDiscoverMovies()
+                            HomeContentOrganismComponentEvent.OnRetry -> viewModel.getDiscoverMovies()
+                        }
                     }
                 }
+
             }
         }
     }
