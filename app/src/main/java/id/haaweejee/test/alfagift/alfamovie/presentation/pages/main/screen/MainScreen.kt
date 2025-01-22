@@ -67,6 +67,12 @@ fun MainScreen(
         }
     }
 
+    LaunchedEffect(isConnected) {
+        if (isConnected && isLoaded && (state.discoverMovie as? ViewState.ViewSuccess)?.data?.isEmpty() == true) {
+            viewModel.getDiscoverMovies()
+        }
+    }
+
     // Check if the last item is visible
     LaunchedEffect(listState) {
         snapshotFlow {
