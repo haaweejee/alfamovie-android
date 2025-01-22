@@ -28,17 +28,27 @@ class MainViewModel(
         }
     }
 
-    fun getDiscoverMovies() {
+    fun getDiscoverMovies(
+        isPullRefresh: Boolean = false
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             getDiscoverMoviesUseCase.invoke(1)
                 .map {
                     it.mapToViewState()
                 }.onStart {
                     emit(ViewState.ViewLoading)
+                    if (isPullRefresh) {
+                        _state.update {
+                            it.copy(
+                                isRefreshing = true
+                            )
+                        }
+                    }
                 }.collect { data ->
                     _state.update {
                         it.copy(
-                            discoverMovie = data
+                            discoverMovie = data,
+                            isRefreshing = false
                         )
                     }
                 }
@@ -61,7 +71,11 @@ class MainViewModel(
                                 val currentData = it.discoverMovie as? ViewState.ViewSuccess
                                 val newData = data as? ViewState.ViewSuccess
                                 val combinedData =
-                                    currentData?.data.orEmpty() + newData?.data.orEmpty()
+                                    if (currentData != newData) {
+                                        currentData?.data.orEmpty() + newData?.data.orEmpty()
+                                    } else {
+                                        currentData?.data.orEmpty()
+                                    }
                                 ViewState.ViewSuccess(combinedData)
                             }
                         )
