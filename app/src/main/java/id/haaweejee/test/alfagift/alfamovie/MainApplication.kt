@@ -1,6 +1,7 @@
 package id.haaweejee.test.alfagift.alfamovie
 
 import android.app.Application
+import id.haaweejee.test.alfagift.alfamovie.data.di.databaseModule
 import id.haaweejee.test.alfagift.alfamovie.data.di.ktorModule
 import id.haaweejee.test.alfagift.alfamovie.data.di.repositoryModule
 import id.haaweejee.test.alfagift.alfamovie.domain.di.useCaseModule
@@ -20,6 +21,7 @@ class MainApplication : Application() {
             //Load Modules
             modules(
                 ktorModule,
+                databaseModule,
                 repositoryModule,
                 useCaseModule,
                 presentationModule
