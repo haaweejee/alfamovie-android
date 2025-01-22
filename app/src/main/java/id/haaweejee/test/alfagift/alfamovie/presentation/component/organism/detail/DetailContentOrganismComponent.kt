@@ -61,29 +61,31 @@ fun LazyListScope.detailContentOrganismComponent(
                     value = data.status
                 )
             }
-            Text(
-                text = "Genres",
-                color = Color.White,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 16.sp
-            )
-            FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
-            ) {
-                data.genres.forEach {
-                    Box(
-                        modifier = Modifier.background(
-                            color = Color(0xFF444444),
-                            shape = RoundedCornerShape(12.dp),
-                        ),
-                    ) {
-                        Text(
-                            text = it,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 10.sp,
-                            color = Color.White,
-                            modifier = Modifier.padding(12.dp)
-                        )
+            if (data.genres.isNotEmpty()) {
+                Text(
+                    text = "Genres",
+                    color = Color.White,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 16.sp
+                )
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    data.genres.forEach {
+                        Box(
+                            modifier = Modifier.background(
+                                color = Color(0xFF444444),
+                                shape = RoundedCornerShape(12.dp),
+                            ),
+                        ) {
+                            Text(
+                                text = it,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 10.sp,
+                                color = Color.White,
+                                modifier = Modifier.padding(12.dp)
+                            )
+                        }
                     }
                 }
             }

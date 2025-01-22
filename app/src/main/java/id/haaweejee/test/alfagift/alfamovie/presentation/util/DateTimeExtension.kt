@@ -12,7 +12,7 @@ fun String.localeDateDayParseHalfMonthSecond(): String {
         val date = dateOnly.parse(this)
         dateDayWithHalfMonthSecond.format(date!!)
     } catch (ex: Exception) {
-        ""
+        "-"
     }
 }
 
@@ -21,7 +21,7 @@ fun String.localeDateDay(): String {
         val date = dateOnly.parse(this)
         dateDayWithMonth.format(date!!)
     } catch (ex: Exception) {
-        ""
+        "-"
     }
 }
 
@@ -30,5 +30,5 @@ fun String.formatDate(): String {
     val outputFormat = SimpleDateFormat("HH:mm:ss | dd MMMM yyyy", Locale.ENGLISH)
 
     val date = inputFormat.parse(this)
-    return outputFormat.format(date!!)
+    return outputFormat.format(date ?: "-")
 }
