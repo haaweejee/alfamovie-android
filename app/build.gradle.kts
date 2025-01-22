@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    kotlin("kapt")
 }
 
 val apiPropertiesFile = rootProject.file("api.properties")
@@ -107,6 +108,15 @@ dependencies {
     // Lottie Library
     implementation(libs.lottie.compose)
 
+    // Database Library
+    implementation(libs.room)
+    kapt(libs.room.compiler)
+    implementation(libs.room.ktx)
+
+    // Material3
+    implementation(libs.material3)
+
+    // Testing Library
     testImplementation(libs.kotlin.coroutine.test)
     testImplementation(libs.kotlin.test.junit)
     testImplementation(libs.mockk)
