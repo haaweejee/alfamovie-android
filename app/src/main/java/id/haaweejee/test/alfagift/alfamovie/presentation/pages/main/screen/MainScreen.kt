@@ -3,22 +3,14 @@ package id.haaweejee.test.alfagift.alfamovie.presentation.pages.main.screen
 import android.content.Intent
 import android.provider.Settings
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,10 +35,8 @@ import id.haaweejee.test.alfagift.alfamovie.R
 import id.haaweejee.test.alfagift.alfamovie.presentation.common.ViewState
 import id.haaweejee.test.alfagift.alfamovie.presentation.component.atoms.GridViewButton
 import id.haaweejee.test.alfagift.alfamovie.presentation.component.moleculs.ErrorAnimation
-import id.haaweejee.test.alfagift.alfamovie.presentation.component.moleculs.MovieGridCard
-import id.haaweejee.test.alfagift.alfamovie.presentation.component.moleculs.MovieGridCardShimmer
-import id.haaweejee.test.alfagift.alfamovie.presentation.component.moleculs.MovieListCard
-import id.haaweejee.test.alfagift.alfamovie.presentation.component.moleculs.MovieListCardShimmer
+import id.haaweejee.test.alfagift.alfamovie.presentation.component.organism.home.HomeContentOrganismComponent
+import id.haaweejee.test.alfagift.alfamovie.presentation.component.organism.home.HomeContentOrganismComponentEvent
 import id.haaweejee.test.alfagift.alfamovie.presentation.pages.detail.DetailMovieActivity
 import id.haaweejee.test.alfagift.alfamovie.presentation.pages.main.vm.MainViewModel
 import id.haaweejee.test.alfagift.alfamovie.presentation.util.NetworkStateTracker
@@ -169,128 +159,25 @@ fun MainScreen(
                     }
                 )
             } else {
-                when (state.discoverMovie) {
-                    ViewState.ViewLoading -> {
-                        if (isGridViewActive) {
-                            LazyVerticalGrid(
-                                columns = GridCells.Fixed(2),
-                                modifier = Modifier
-                                    .fillMaxSize(),
-                                verticalArrangement = Arrangement.spacedBy(16.dp),
-                                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                                contentPadding = PaddingValues(16.dp)
-                            ) {
-                                items(20) {
-                                    MovieGridCardShimmer()
-                                }
-                            }
-                        } else {
-                            Column(
-                                modifier = Modifier
-                                    .padding(top = 16.dp)
-                                    .padding(horizontal = 16.dp)
-                                    .fillMaxSize(),
-                                verticalArrangement = Arrangement.spacedBy(16.dp)
-                            ) {
-                                repeat(10) {
-                                    MovieListCardShimmer()
-                                }
-                            }
+                HomeContentOrganismComponent(
+                    state = state.discoverMovie,
+                    listState = listState,
+                    gridState = gridState,
+                    isGridViewActive = isGridViewActive
+                ) { event ->
+                    when (event) {
+                        is HomeContentOrganismComponentEvent.OnClick -> {
+                            context.startActivity(
+                                Intent(
+                                    context,
+                                    DetailMovieActivity::class.java
+                                ).putExtra(
+                                    DetailMovieActivity.EXTRA_MOVIE_ID, event.id
+                                )
+                            )
                         }
-                    }
 
-                    ViewState.ViewEmpty -> {}
-                    is ViewState.ViewError -> {
-                        val title = (state.discoverMovie as? ViewState.ViewError)?.title.orEmpty()
-                        val message =
-                            (state.discoverMovie as? ViewState.ViewError)?.message.orEmpty()
-                        ErrorAnimation(
-                            lottie = R.raw.error_animation,
-                            title = title,
-                            message = message,
-                            actionText = "Retry",
-                            modifier = Modifier
-                                .padding(top = 16.dp)
-                                .padding(horizontal = 16.dp),
-                            onAction = { viewModel.getDiscoverMovies() }
-                        ) {
-                            viewModel.getDiscoverMovies()
-                        }
-                    }
-
-                    is ViewState.ViewFailed -> {
-                        val message =
-                            (state.discoverMovie as? ViewState.ViewFailed)?.exception?.message.orEmpty()
-                        ErrorAnimation(
-                            lottie = R.raw.error_animation,
-                            title = "Something when Wrong",
-                            message = message,
-                            actionText = "Retry",
-                            modifier = Modifier
-                                .padding(top = 16.dp)
-                                .padding(horizontal = 16.dp)
-                        ) {
-                            viewModel.getDiscoverMovies()
-                        }
-                    }
-
-                    is ViewState.ViewSuccess -> {
-                        if (isGridViewActive) {
-                            LazyVerticalGrid(
-                                columns = GridCells.Fixed(2), // Number of columns
-                                modifier = Modifier.fillMaxSize(),
-                                contentPadding = PaddingValues(16.dp),
-                                state = gridState,
-                                verticalArrangement = Arrangement.spacedBy(16.dp),
-                                horizontalArrangement = Arrangement.spacedBy(12.dp)
-                            ) {
-                                items(
-                                    (state.discoverMovie as? ViewState.ViewSuccess)?.data
-                                        ?: emptyList()
-                                ) {
-                                    MovieGridCard(
-                                        modifier = Modifier,
-                                        data = it
-                                    ) {
-                                        context.startActivity(
-                                            Intent(
-                                                context,
-                                                DetailMovieActivity::class.java
-                                            ).putExtra(
-                                                DetailMovieActivity.EXTRA_MOVIE_ID, it.id
-                                            )
-                                        )
-                                    }
-                                }
-
-                            }
-                        } else {
-                            LazyColumn(
-                                modifier = Modifier.fillMaxSize(),
-                                contentPadding = PaddingValues(16.dp),
-                                state = listState,
-                                verticalArrangement = Arrangement.spacedBy(16.dp)
-                            ) {
-                                items(
-                                    (state.discoverMovie as? ViewState.ViewSuccess)?.data
-                                        ?: emptyList()
-                                ) {
-                                    MovieListCard(
-                                        modifier = Modifier,
-                                        data = it
-                                    ) {
-                                        context.startActivity(
-                                            Intent(
-                                                context,
-                                                DetailMovieActivity::class.java
-                                            ).putExtra(
-                                                DetailMovieActivity.EXTRA_MOVIE_ID, it.id
-                                            )
-                                        )
-                                    }
-                                }
-                            }
-                        }
+                        HomeContentOrganismComponentEvent.OnRetry -> viewModel.getDiscoverMovies()
                     }
                 }
             }
