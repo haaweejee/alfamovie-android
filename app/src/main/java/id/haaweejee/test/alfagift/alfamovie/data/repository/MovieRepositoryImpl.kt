@@ -1,12 +1,16 @@
 package id.haaweejee.test.alfagift.alfamovie.data.repository
 
+import android.content.Context
 import android.util.Log
 import id.haaweejee.test.alfagift.alfamovie.data.common.NetworkResult
 import id.haaweejee.test.alfagift.alfamovie.data.mapper.toDetailMovie
 import id.haaweejee.test.alfagift.alfamovie.data.mapper.toListMovie
+import id.haaweejee.test.alfagift.alfamovie.data.mapper.toListMovieEntity
 import id.haaweejee.test.alfagift.alfamovie.data.mapper.toListMovieReview
 import id.haaweejee.test.alfagift.alfamovie.data.mapper.toListMovieVideo
+import id.haaweejee.test.alfagift.alfamovie.data.source.local.dao.MovieDao
 import id.haaweejee.test.alfagift.alfamovie.data.source.remote.service.MovieDBApiService
+import id.haaweejee.test.alfagift.alfamovie.data.util.isNetworkAvailable
 import id.haaweejee.test.alfagift.alfamovie.domain.entities.DetailMovie
 import id.haaweejee.test.alfagift.alfamovie.domain.entities.Movie
 import id.haaweejee.test.alfagift.alfamovie.domain.entities.MovieReview
@@ -16,11 +20,14 @@ import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import java.io.IOException
 
 class MovieRepositoryImpl(
-    private val remote: MovieDBApiService
+    private val context: Context,
+    private val remote: MovieDBApiService,
+    private val dao: MovieDao
 ) : MovieRepository {
     override fun fetchDiscover(page: Int): Flow<NetworkResult<List<Movie>>> {
         return channelFlow {
@@ -29,15 +36,27 @@ class MovieRepositoryImpl(
                 val response = remote.getMoviesDiscover(page)
 
                 // Check if the response is successful
-                if (response?.results != null) {
+                if (response?.results != null && isNetworkAvailable(context)) {
                     send(NetworkResult.ResultSuccess(response.toListMovie()))
+                    if (page > 1) {
+                        dao.insertMovies(response.toListMovieEntity())
+                    } else {
+                        dao.clearMovies()
+                        dao.insertMovies(response.toListMovieEntity())
+                    }
                 } else {
-                    send(
-                        NetworkResult.ResultError(
-                            404,
-                            "Data not found"
+                    if (dao.getMovies().first().isNotEmpty()) {
+                        send(NetworkResult.ResultSuccess(dao.getMovies().first().toListMovie()))
+                        Log.d("MovieRepositoryImpl", "fetchDiscover: Data Found")
+                    } else {
+                        send(
+                            NetworkResult.ResultError(
+                                404,
+                                "Data not found"
+                            )
                         )
-                    )
+                        Log.d("MovieRepositoryImpl", "fetchDiscover: Data not found")
+                    }
                 }
             } catch (e: ClientRequestException) {
                 // Handle HTTP errors (like 401, 403, 404)

@@ -1,5 +1,6 @@
 package id.haaweejee.test.alfagift.alfamovie.data.mapper
 
+import id.haaweejee.test.alfagift.alfamovie.data.source.local.entity.MovieEntity
 import id.haaweejee.test.alfagift.alfamovie.data.source.remote.dto.DetailMovieResponse
 import id.haaweejee.test.alfagift.alfamovie.data.source.remote.dto.MovieReviewsResponse
 import id.haaweejee.test.alfagift.alfamovie.data.source.remote.dto.MovieVideosResponse
@@ -25,6 +26,40 @@ fun MoviesResponse.Result.toMovie(): Movie {
         releaseDate = releaseDate.orEmpty(),
         rating = voteAverage ?: 0.0,
         overview = overview.orEmpty()
+    )
+}
+
+fun MoviesResponse.toListMovieEntity(): List<MovieEntity> {
+    return this.results?.map {
+        it.toMovieEntity()
+    }.orEmpty()
+}
+
+fun MoviesResponse.Result.toMovieEntity(): MovieEntity {
+    return MovieEntity(
+        id = id ?: 0,
+        title = title.orEmpty(),
+        poster = imageUrl + posterPath.orEmpty(),
+        releaseDate = releaseDate.orEmpty(),
+        rating = voteAverage ?: 0.0,
+        overview = overview.orEmpty()
+    )
+}
+
+fun List<MovieEntity>.toListMovie(): List<Movie> {
+    return this.map {
+        it.toMovieEntity()
+    }
+}
+
+fun MovieEntity.toMovieEntity(): Movie {
+    return Movie(
+        id = id,
+        title = title,
+        poster = imageUrl + poster,
+        releaseDate = releaseDate,
+        rating = rating,
+        overview = overview
     )
 }
 
