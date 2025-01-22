@@ -31,6 +31,9 @@ fun MovieGridCard(
             .clickable { onClick() },
         placeholder = painterResource(
             R.drawable.image_loading_placeholder
+        ),
+        error = painterResource(
+            R.drawable.image_loading_placeholder
         )
     )
 }

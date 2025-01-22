@@ -75,6 +75,9 @@ fun ReviewCard(
                         .crossfade(true)
                         .build(),
                     placeholder = painterResource(R.drawable.image_loading_placeholder),
+                    error = painterResource(
+                        R.drawable.image_loading_placeholder
+                    ),
                     contentDescription = "poster_path",
                     contentScale = ContentScale.Crop,
                     modifier = modifier

@@ -57,6 +57,9 @@ fun MovieListCard(
                     .clip(RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp)),
                 placeholder = painterResource(
                     R.drawable.image_loading_placeholder
+                ),
+                error = painterResource(
+                    R.drawable.image_loading_placeholder
                 )
             )
             Column(

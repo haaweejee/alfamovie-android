@@ -42,6 +42,9 @@ fun LazyListScope.detailHeaderOrganismComponent(
                     .height(250.dp),
                 placeholder = painterResource(
                     R.drawable.image_loading_placeholder
+                ),
+                error = painterResource(
+                    R.drawable.image_loading_placeholder
                 )
             )
             Box(
@@ -76,6 +79,9 @@ fun LazyListScope.detailHeaderOrganismComponent(
                     .align(Alignment.BottomCenter)
                     .clip(RoundedCornerShape(4.dp)),
                 placeholder = painterResource(
+                    R.drawable.image_loading_placeholder
+                ),
+                error = painterResource(
                     R.drawable.image_loading_placeholder
                 )
             )
