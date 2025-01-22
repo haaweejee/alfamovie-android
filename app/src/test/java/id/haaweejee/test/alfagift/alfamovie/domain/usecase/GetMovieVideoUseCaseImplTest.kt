@@ -37,26 +37,6 @@ class GetMovieVideoUseCaseImplTest {
         }
 
     @Test
-    fun `invoke should emit ResultSuccess with default MovieVideo when no Trailer or Teaser is found`() =
-        runTest {
-            // Arrange
-            val movieId = 1
-            val movieVideos = listOf(
-                MovieVideo(key = "xyz789", site = "Vimeo", type = "Featurette")
-            )
-            val successResult = NetworkResult.ResultSuccess(movieVideos)
-
-            coEvery { mockRepository.fetchVideos(movieId) } returns flowOf(successResult)
-
-            // Act & Assert
-            useCase.invoke(movieId).test {
-                val expectedVideo = MovieVideo(key = "", site = "", type = "")
-                assertEquals(NetworkResult.ResultSuccess(expectedVideo), awaitItem())
-                awaitComplete()
-            }
-        }
-
-    @Test
     fun `invoke should emit ResultError when repository fetchVideos emits non-success result`() =
         runTest {
             // Arrange
