@@ -20,7 +20,11 @@ constraintlayout = "2.2.0"
 coilVer = "3.0.4"
 youtubePlayerVer = "12.1.1"
 lottieComposeVer = "6.3.0"
-
+kotlinJUnit = "1.9.10"
+kotlinCoroutineTest = "1.7.3"
+mockk = "1.13.7"
+ktorMock = "2.3.4"
+turbineVer = "0.12.1"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -60,11 +64,18 @@ youtube-player = { module = "com.pierfrancescosoffritti.androidyoutubeplayer:cor
 
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieComposeVer" }
 
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlinJUnit" }
+kotlin-coroutine-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutineTest" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+ktor-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktorMock" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbineVer" }
 
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -106,4 +106,11 @@ dependencies {
 
     // Lottie Library
     implementation(libs.lottie.compose)
+
+    testImplementation(libs.kotlin.coroutine.test)
+    testImplementation(libs.kotlin.test.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.ktor.mock)
+    testImplementation(libs.turbine)
+
 }
