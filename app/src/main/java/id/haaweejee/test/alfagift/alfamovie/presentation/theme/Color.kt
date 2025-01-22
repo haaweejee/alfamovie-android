@@ -1,4 +1,4 @@
-package id.haaweejee.test.alfagift.alfamovie.ui.theme
+package id.haaweejee.test.alfagift.alfamovie.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 

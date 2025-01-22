@@ -1,6 +1,5 @@
-package id.haaweejee.test.alfagift.alfamovie.ui.theme
+package id.haaweejee.test.alfagift.alfamovie.presentation.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

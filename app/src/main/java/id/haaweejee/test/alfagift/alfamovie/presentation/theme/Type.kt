@@ -1,4 +1,4 @@
-package id.haaweejee.test.alfagift.alfamovie.ui.theme
+package id.haaweejee.test.alfagift.alfamovie.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
