@@ -1,7 +1,6 @@
 package id.haaweejee.test.alfagift.alfamovie.data.repository
 
 import android.content.Context
-import android.util.Log
 import id.haaweejee.test.alfagift.alfamovie.data.common.NetworkResult
 import id.haaweejee.test.alfagift.alfamovie.data.mapper.toDetailMovie
 import id.haaweejee.test.alfagift.alfamovie.data.mapper.toListMovie
@@ -47,7 +46,6 @@ class MovieRepositoryImpl(
                 } else {
                     if (dao.getMovies().first().isNotEmpty()) {
                         send(NetworkResult.ResultSuccess(dao.getMovies().first().toListMovie()))
-                        Log.d("MovieRepositoryImpl", "fetchDiscover: Data Found")
                     } else {
                         send(
                             NetworkResult.ResultError(
@@ -55,7 +53,6 @@ class MovieRepositoryImpl(
                                 "Data not found"
                             )
                         )
-                        Log.d("MovieRepositoryImpl", "fetchDiscover: Data not found")
                     }
                 }
             } catch (e: ClientRequestException) {
@@ -181,7 +178,6 @@ class MovieRepositoryImpl(
             try {
                 // Attempt to get data from the API
                 val response = remote.getMovieVideo(movieId)
-                Log.d("MovieRepositoryImpl", "fetchVideos: $response")
 
                 // Check if the response is successful
                 if (response?.results != null) {
